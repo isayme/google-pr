@@ -1,0 +1,15 @@
+﻿{
+  "name" : "google-pr",
+  "description" : "parse google PR value for a domain",
+  "version" : "0.0.1",
+  "author" : "iSayme <isaymeorg@gmail.com>",
+  "dependencies" : {
+    "request" : "*"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/isayme/google-pr.git"
+  },
+  "main" : "google-pr.js",
+  "license" : "MIT"
+}
