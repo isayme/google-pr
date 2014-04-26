@@ -1,4 +1,4 @@
-﻿{
+{
   "name" : "google-pr",
   "description" : "parse google PR value for a domain",
   "version" : "0.0.1",

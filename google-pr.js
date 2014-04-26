@@ -1,14 +1,14 @@
-﻿var request = require('request')
+var request = require('request')
   , util = require('util');
  
 exports.query = function(domain, callback) {
   if ("string" != typeof domain) {
-    var err = new Error('domain should be a string type!')
+    var err = new Error('domain should be a string type!');
     return err;
   }
   
   if ("function" != typeof callback) {
-    var err = new Error('no callback function found!')
+    var err = new Error('no callback function found!');
     return err;
   }
   
@@ -27,7 +27,7 @@ exports.query = function(domain, callback) {
   request(url, function(error, response, body) {
     if (!error && 200 == response.statusCode) {
       var arr = body.split(":");
-      callback(null, arr[arr.length - 1])
+      callback(null, arr[arr.length - 1]);
     } else {
       var err = new Error('PR request failed!');
       callback(err, -1);

@@ -1,4 +1,4 @@
-﻿var gpr = require('./google-pr');
+var gpr = require('./google-pr');
 
 gpr.query('google.com', function(err, val){
   if (null != err) {
