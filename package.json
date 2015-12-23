@@ -1,15 +1,20 @@
 {
-  "name" : "google-pr",
-  "description" : "parse google PR value for a domain",
-  "version" : "0.0.2",
-  "author" : "iSayme <isaymeorg@gmail.com>",
-  "dependencies" : {
-    "request" : "*"
+  "name": "google-pr",
+  "description": "get google PR of a domain",
+  "version": "1.0.0",
+  "author": "iSayme <isaymeorg@gmail.com>",
+  "dependencies": {
+    "mocha": "^2.3.4",
+    "pagerank-checksum": "^1.0.0",
+    "request": "^2.67.0"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/isayme/google-pr.git"
+  "scripts": {
+    "test": "mocha"
   },
-  "main" : "google-pr.js",
-  "license" : "MIT"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isayme/google-pr.git"
+  },
+  "main": "google-pr.js",
+  "license": "MIT"
 }

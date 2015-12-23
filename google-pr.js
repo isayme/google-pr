@@ -1,38 +1,46 @@
-var request = require('request')
-  , util = require('util');
- 
+var request = require('request');
+var checksum = require('pagerank-checksum');
+
+var pkg = require('./package');
+
+var USER_AGENT = pkg.name + ' ' + pkg.version;
+
 exports.query = function(domain, callback) {
-  if ("string" != typeof domain) {
-    var err = new Error('domain should be a string type!');
-    return err;
-  }
-  
-  if ("function" != typeof callback) {
-    var err = new Error('no callback function found!');
-    return err;
-  }
-  
-  // Get PageRank Seed
-  var GPR_HASH_SEED = "Mining PageRank is AGAINST GOOGLE'S TERMS OF SERVICE. Yes, I'm talking to you, scammer.";
-  var magic = 0x1020345;
- 
-  for (var i = 0; i < domain.length; i++) {
-    magic ^= GPR_HASH_SEED.charCodeAt(i % GPR_HASH_SEED.length) ^ domain.charCodeAt(i);
-    magic = (magic >>> 23 | magic << 9) & 0x0ffffffff;
+  if ('string' != typeof domain) {
+    throw new TypeError('domain must be string');
   }
 
-  var checksum = "8" + magic.toString(16);
-  var url = util.format("http://toolbarqueries.google.com/tbr?client=navclient-auto&features=Rank&ch=%s&q=info:%s", checksum, domain);
+  if ('function' != typeof callback) {
+    throw new Error('callback required');
+  }
 
-  request(url, function(error, response, body) {
-    if (!error && 200 == response.statusCode) {
-      var arr = body.split(":");
-      callback(null, arr[arr.length - 1]);
-    } else {
-      var err = new Error('PR request failed!');
-      callback(err, -1);
-    };
+  request({
+    method: 'GET',
+    url: 'http://toolbarqueries.google.com/tbr',
+    qs: {
+      client: 'navclient-auto',
+      features: 'Rank',
+      ch: checksum(domain),
+      q: 'info:' + domain
+    },
+    headers: {
+      'User-Agent': USER_AGENT
+    },
+    encoding: 'utf8',
+    gzip: true
+  }, function(error, response, body) {
+    if (error) {
+      return callback(error);
+    }
+
+    if (response.statusCode !== 200) {
+      var msg = 'PR request fail with statusCode: ' + response.statusCode;
+      error = new Error(msg);
+      return callback(error);
+    }
+
+    var arr = body.split(':');
+    var pr = parseInt(arr[arr.length - 1]);
+    callback(null, pr);
   });
-  
-  return null;
 };
